@@ -29,7 +29,7 @@
             <nav class="navigation">
                 <a href="#" class="active">Dashboard</a>
                 <a href="#">Sensor History</a>
-                <a href="#">Alerts</a>
+                <a href="#alert-history">Alerts</a>
                 <a href="#">Recommendations</a>
                 <a href="#">System Status</a>
             </nav>
@@ -238,6 +238,79 @@
                 </article>
 
             </section>
+            <section
+    id="alert-history"
+    class="alert-history-section"
+>
+    <div class="section-heading alert-history-heading">
+        <div>
+            <p class="eyebrow">EMAIL NOTIFICATION LOG</p>
+            <h2>Recent Alert History</h2>
+        </div>
+
+        <span class="history-period">
+            Latest {{ recent_alerts | length }} alerts
+        </span>
+    </div>
+
+    {% if recent_alerts %}
+        <div class="alert-history-list">
+            {% for alert in recent_alerts %}
+                <article
+                    class="alert-history-item
+                    {{ alert.iaq_status | lower }}"
+                >
+                    <div class="alert-status-column">
+                        <span class="alert-symbol">!</span>
+
+                        <div>
+                            <span class="alert-status">
+                                {{ alert.iaq_status }}
+                            </span>
+
+                            <small>
+                                Email notification sent
+                            </small>
+                        </div>
+                    </div>
+
+                    <div class="alert-reading">
+                        <span>CO₂</span>
+                        <strong>{{ alert.co2 }} ppm</strong>
+                    </div>
+
+                    <div class="alert-reading">
+                        <span>PM2.5</span>
+                        <strong>
+                            {{ alert.pm25 }} µg/m³
+                        </strong>
+                    </div>
+
+                    <div class="alert-message">
+                        <strong>{{ alert.alert_title }}</strong>
+                        <span>{{ alert.recommendation }}</span>
+                    </div>
+
+                    <time>{{ alert.display_time }}</time>
+                </article>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-alert-history">
+            <div class="empty-alert-icon">✓</div>
+
+            <div>
+                <h3>No email alerts recorded</h3>
+
+                <p>
+                    The monitoring service has not detected an
+                    alert condition. Future sent notifications
+                    will appear here automatically.
+                </p>
+            </div>
+        </div>
+    {% endif %}
+</section>
 
         </main>
     </div>

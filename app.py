@@ -3,6 +3,7 @@ from datetime import datetime
 from flask import Flask, render_template
 from requests import RequestException
 
+from alert_store import get_recent_alerts
 from iaq_logic import assess_air_quality
 from thingspeak_client import (
     fetch_latest_readings,
@@ -48,11 +49,13 @@ def dashboard():
         )
 
     readings.update(assess_air_quality(readings))
+    recent_alerts = get_recent_alerts(limit=5)
 
     return render_template(
         "index.html",
         readings=readings,
         history=history,
+        recent_alerts=recent_alerts,
         last_updated=last_updated,
         data_source=data_source,
         connection_error=connection_error,

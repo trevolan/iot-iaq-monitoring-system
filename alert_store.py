@@ -98,3 +98,37 @@ def record_alert(readings, assessment):
                 datetime.now(timezone.utc).isoformat(),
             ),
         )
+
+
+def get_recent_alerts(limit=5):
+    """Return recent email alerts for the dashboard."""
+
+    initialize_database()
+
+    with get_connection() as connection:
+        rows = connection.execute(
+            """
+            SELECT *
+            FROM alerts
+            ORDER BY id DESC
+            LIMIT ?
+            """,
+            (limit,),
+        ).fetchall()
+
+    alerts = []
+
+    for row in rows:
+        alert = dict(row)
+
+        sent_at = datetime.fromisoformat(
+            alert["sent_at"]
+        ).astimezone()
+
+        alert["display_time"] = sent_at.strftime(
+            "%d %B %Y, %H:%M"
+        )
+
+        alerts.append(alert)
+
+    return alerts

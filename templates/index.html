@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AirSense IQ Dashboard</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+</head>
+
+<body>
+    <div class="dashboard-layout">
+
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="brand-icon">AQ</div>
+
+                <div>
+                    <h2>AirSense IQ</h2>
+                    <p>Indoor Air Intelligence</p>
+                </div>
+            </div>
+
+            <nav class="navigation">
+                <a href="#" class="active">Dashboard</a>
+                <a href="#">Sensor History</a>
+                <a href="#">Alerts</a>
+                <a href="#">Recommendations</a>
+                <a href="#">System Status</a>
+            </nav>
+
+            <div class="research-label">
+                <span>MIoT Research System</span>
+                <p>ESP32 environmental monitoring node</p>
+            </div>
+        </aside>
+
+        <main class="main-content">
+
+            <header class="topbar">
+                <div>
+                    <p class="eyebrow">LIVE ENVIRONMENT OVERVIEW</p>
+                    <h1>Indoor Air Quality Dashboard</h1>
+                    <p class="last-updated">
+                        Last updated: {{ last_updated }}
+                    </p>
+                </div>
+
+                <div class="device-status">
+                    <span class="status-dot"></span>
+                    Device {{ readings.device_status }}
+                </div>
+            </header>
+
+            <section class="air-quality-banner">
+                <div>
+                    <p class="banner-label">CURRENT AIR QUALITY</p>
+                    <h2>{{ readings.iaq_status }}</h2>
+                    <p>
+                        Current CO₂ and particulate-matter readings are
+                        within the configured demonstration limits.
+                    </p>
+                </div>
+
+                <div class="air-quality-score">
+                    <div class="score-circle">
+                        <span>IAQ</span>
+                        <strong>{{ readings.iaq_status }}</strong>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section-heading">
+                <div>
+                    <p class="eyebrow">LIVE SENSOR READINGS</p>
+                    <h2>Environmental Conditions</h2>
+                </div>
+            </section>
+
+            <section class="sensor-grid">
+
+                <article class="sensor-card temperature-card">
+                    <div class="card-icon">T</div>
+                    <div>
+                        <p>Temperature</p>
+                        <h3>{{ readings.temperature }}<span>°C</span></h3>
+                        <small>Indoor temperature</small>
+                    </div>
+                </article>
+
+                <article class="sensor-card humidity-card">
+                    <div class="card-icon">H</div>
+                    <div>
+                        <p>Humidity</p>
+                        <h3>{{ readings.humidity }}<span>%</span></h3>
+                        <small>Relative humidity</small>
+                    </div>
+                </article>
+
+                <article class="sensor-card co2-card">
+                    <div class="card-icon">C</div>
+                    <div>
+                        <p>Carbon Dioxide</p>
+                        <h3>{{ readings.co2 }}<span>ppm</span></h3>
+                        <small>Ventilation indicator</small>
+                    </div>
+                </article>
+
+                <article class="sensor-card pm-card">
+                    <div class="card-icon">1</div>
+                    <div>
+                        <p>PM1.0</p>
+                        <h3>{{ readings.pm1 }}<span>µg/m³</span></h3>
+                        <small>Ultrafine particles</small>
+                    </div>
+                </article>
+
+                <article class="sensor-card pm-card">
+                    <div class="card-icon">2.5</div>
+                    <div>
+                        <p>PM2.5</p>
+                        <h3>{{ readings.pm25 }}<span>µg/m³</span></h3>
+                        <small>Fine particles</small>
+                    </div>
+                </article>
+
+                <article class="sensor-card pm-card">
+                    <div class="card-icon">10</div>
+                    <div>
+                        <p>PM10</p>
+                        <h3>{{ readings.pm10 }}<span>µg/m³</span></h3>
+                        <small>Inhalable particles</small>
+                    </div>
+                </article>
+
+            </section>
+
+            <section class="insight-grid">
+
+                <article class="insight-card recommendation-card">
+                    <div class="insight-heading">
+                        <span class="insight-icon">✓</span>
+                        <div>
+                            <p class="eyebrow">INTELLIGENT RECOMMENDATION</p>
+                            <h2>No immediate action required</h2>
+                        </div>
+                    </div>
+
+                    <p>
+                        Continue normal room use and ventilation.
+                        The system will provide an alert and practical
+                        recommendation if conditions deteriorate.
+                    </p>
+                </article>
+
+                <article class="insight-card monitoring-card">
+                    <p class="eyebrow">MONITORING STATUS</p>
+                    <h2>All sensors reporting</h2>
+
+                    <div class="monitoring-row">
+                        <span>ESP32 node</span>
+                        <strong>Connected</strong>
+                    </div>
+
+                    <div class="monitoring-row">
+                        <span>Threshold alert</span>
+                        <strong>Active</strong>
+                    </div>
+
+                    <div class="monitoring-row">
+                        <span>Predictive alert</span>
+                        <strong>Coming later</strong>
+                    </div>
+                </article>
+
+            </section>
+
+        </main>
+    </div>
+</body>
+</html>

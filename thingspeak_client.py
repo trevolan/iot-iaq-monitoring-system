@@ -56,6 +56,7 @@ def fetch_latest_readings():
     local_recorded_at = recorded_at.astimezone()
 
     return {
+        "entry_id": data.get("entry_id"),
         "temperature": convert_reading(
             data.get("field1"), "Temperature"
         ),

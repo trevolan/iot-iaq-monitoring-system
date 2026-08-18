@@ -80,3 +80,68 @@ def fetch_latest_readings():
             "%d %B %Y, %H:%M:%S"
         ),
     }
+def fetch_recent_readings(results=30):
+    """Retrieve recent ThingSpeak readings for dashboard charts."""
+
+    channel_id = os.getenv("THINGSPEAK_CHANNEL_ID")
+    read_api_key = os.getenv("THINGSPEAK_READ_API_KEY")
+
+    if not channel_id or not read_api_key:
+        raise ValueError(
+            "ThingSpeak Channel ID or Read API Key is missing."
+        )
+
+    results = max(1, min(int(results), 100))
+
+    url = (
+        f"https://api.thingspeak.com/channels/"
+        f"{channel_id}/feeds.json"
+    )
+
+    response = requests.get(
+        url,
+        params={
+            "api_key": read_api_key,
+            "results": results,
+        },
+        timeout=10,
+    )
+
+    response.raise_for_status()
+
+    feeds = response.json().get("feeds", [])
+    history = []
+
+    for feed in feeds:
+        try:
+            recorded_at = datetime.fromisoformat(
+                feed["created_at"].replace("Z", "+00:00")
+            ).astimezone()
+
+            history.append(
+                {
+                    "time": recorded_at.strftime("%H:%M"),
+                    "temperature": convert_reading(
+                        feed.get("field1"),
+                        "Temperature",
+                    ),
+                    "humidity": convert_reading(
+                        feed.get("field2"),
+                        "Humidity",
+                    ),
+                    "pm25": convert_reading(
+                        feed.get("field4"),
+                        "PM2.5",
+                    ),
+                    "co2": convert_reading(
+                        feed.get("field6"),
+                        "CO2",
+                    ),
+                }
+            )
+
+        except (ValueError, KeyError):
+            # Skip incomplete records instead of breaking the chart.
+            continue
+
+    return history

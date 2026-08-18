@@ -4,7 +4,10 @@ from flask import Flask, render_template
 from requests import RequestException
 
 from iaq_logic import assess_air_quality
-from thingspeak_client import fetch_latest_readings
+from thingspeak_client import (
+    fetch_latest_readings,
+    fetch_recent_readings,
+)
 
 
 app = Flask(__name__)
@@ -27,6 +30,7 @@ def dashboard():
 
     try:
         readings = fetch_latest_readings()
+        history = fetch_recent_readings(results=30)
         last_updated = readings.pop("last_updated")
         data_source = "Live ThingSpeak data"
 
@@ -34,6 +38,7 @@ def dashboard():
         app.logger.warning("ThingSpeak connection failed: %s", error)
 
         readings = DEMO_READINGS.copy()
+        history = []
         last_updated = datetime.now().strftime(
             "%d %B %Y, %H:%M:%S"
         )
@@ -47,6 +52,7 @@ def dashboard():
     return render_template(
         "index.html",
         readings=readings,
+        history=history,
         last_updated=last_updated,
         data_source=data_source,
         connection_error=connection_error,

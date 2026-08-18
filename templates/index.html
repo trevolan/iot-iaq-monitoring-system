@@ -144,6 +144,48 @@
                 </article>
 
             </section>
+            <section class="section-heading chart-heading">
+    <div>
+        <p class="eyebrow">RECENT SENSOR HISTORY</p>
+        <h2>Environmental Trends</h2>
+    </div>
+
+    <span class="history-period">
+        Latest {{ history | length }} readings
+    </span>
+</section>
+
+<section class="chart-grid">
+    <article class="chart-card">
+        <div class="chart-card-heading">
+            <div>
+                <p class="eyebrow">AIR QUALITY TREND</p>
+                <h3>CO₂ and PM2.5</h3>
+            </div>
+
+            <span>Configured thresholds included</span>
+        </div>
+
+        <div class="chart-container">
+            <canvas id="airQualityChart"></canvas>
+        </div>
+    </article>
+
+    <article class="chart-card">
+        <div class="chart-card-heading">
+            <div>
+                <p class="eyebrow">ROOM CONDITIONS</p>
+                <h3>Temperature and Humidity</h3>
+            </div>
+
+            <span>Recent indoor measurements</span>
+        </div>
+
+        <div class="chart-container">
+            <canvas id="climateChart"></canvas>
+        </div>
+    </article>
+</section>
 
             <section class="insight-grid">
 
@@ -199,5 +241,255 @@
 
         </main>
     </div>
+    <div
+    id="historyData"
+    data-history='{{ history | tojson }}'
+    hidden
+></div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    const historyElement = document.getElementById(
+    "historyData"
+);
+
+const history = JSON.parse(
+    historyElement.dataset.history
+);
+
+    const labels = history.map((reading) => reading.time);
+
+    const co2Values = history.map((reading) => reading.co2);
+    const pm25Values = history.map((reading) => reading.pm25);
+
+    const temperatureValues = history.map(
+        (reading) => reading.temperature
+    );
+
+    const humidityValues = history.map(
+        (reading) => reading.humidity
+    );
+
+    const gridColour = "rgba(113, 128, 150, 0.12)";
+    const tickColour = "#718096";
+
+    if (history.length > 0) {
+        new Chart(
+            document.getElementById("airQualityChart"),
+            {
+                type: "line",
+
+                data: {
+                    labels: labels,
+
+                    datasets: [
+                        {
+                            label: "CO₂ (ppm)",
+                            data: co2Values,
+                            borderColor: "#1d7df2",
+                            backgroundColor:
+                                "rgba(29, 125, 242, 0.10)",
+                            borderWidth: 3,
+                            pointRadius: 2,
+                            tension: 0.35,
+                            fill: true,
+                            yAxisID: "co2Axis",
+                        },
+                        {
+                            label: "CO₂ trigger (1000 ppm)",
+                            data: labels.map(() => 1000),
+                            borderColor: "#ef5350",
+                            borderWidth: 1.5,
+                            borderDash: [7, 6],
+                            pointRadius: 0,
+                            fill: false,
+                            yAxisID: "co2Axis",
+                        },
+                        {
+                            label: "PM2.5 (µg/m³)",
+                            data: pm25Values,
+                            borderColor: "#21c58b",
+                            backgroundColor:
+                                "rgba(33, 197, 139, 0.08)",
+                            borderWidth: 3,
+                            pointRadius: 2,
+                            tension: 0.35,
+                            fill: true,
+                            yAxisID: "pmAxis",
+                        },
+                        {
+                            label: "PM2.5 trigger (35 µg/m³)",
+                            data: labels.map(() => 35),
+                            borderColor: "#ff9f43",
+                            borderWidth: 1.5,
+                            borderDash: [7, 6],
+                            pointRadius: 0,
+                            fill: false,
+                            yAxisID: "pmAxis",
+                        },
+                    ],
+                },
+
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: "index",
+                        intersect: false,
+                    },
+                    plugins: {
+                        legend: {
+                            position: "bottom",
+                            labels: {
+                                color: tickColour,
+                                usePointStyle: true,
+                                padding: 18,
+                            },
+                        },
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                color: gridColour,
+                            },
+                            ticks: {
+                                color: tickColour,
+                                maxTicksLimit: 8,
+                            },
+                        },
+                        co2Axis: {
+                            position: "left",
+                            beginAtZero: true,
+                            grid: {
+                                color: gridColour,
+                            },
+                            ticks: {
+                                color: tickColour,
+                            },
+                            title: {
+                                display: true,
+                                text: "CO₂ (ppm)",
+                                color: tickColour,
+                            },
+                        },
+                        pmAxis: {
+                            position: "right",
+                            beginAtZero: true,
+                            grid: {
+                                drawOnChartArea: false,
+                            },
+                            ticks: {
+                                color: tickColour,
+                            },
+                            title: {
+                                display: true,
+                                text: "PM2.5 (µg/m³)",
+                                color: tickColour,
+                            },
+                        },
+                    },
+                },
+            }
+        );
+
+        new Chart(
+            document.getElementById("climateChart"),
+            {
+                type: "line",
+
+                data: {
+                    labels: labels,
+
+                    datasets: [
+                        {
+                            label: "Temperature (°C)",
+                            data: temperatureValues,
+                            borderColor: "#ff9f43",
+                            backgroundColor:
+                                "rgba(255, 159, 67, 0.10)",
+                            borderWidth: 3,
+                            pointRadius: 2,
+                            tension: 0.35,
+                            fill: true,
+                            yAxisID: "temperatureAxis",
+                        },
+                        {
+                            label: "Humidity (%)",
+                            data: humidityValues,
+                            borderColor: "#28c7d9",
+                            backgroundColor:
+                                "rgba(40, 199, 217, 0.08)",
+                            borderWidth: 3,
+                            pointRadius: 2,
+                            tension: 0.35,
+                            fill: true,
+                            yAxisID: "humidityAxis",
+                        },
+                    ],
+                },
+
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: "index",
+                        intersect: false,
+                    },
+                    plugins: {
+                        legend: {
+                            position: "bottom",
+                            labels: {
+                                color: tickColour,
+                                usePointStyle: true,
+                                padding: 18,
+                            },
+                        },
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                color: gridColour,
+                            },
+                            ticks: {
+                                color: tickColour,
+                                maxTicksLimit: 8,
+                            },
+                        },
+                        temperatureAxis: {
+                            position: "left",
+                            grid: {
+                                color: gridColour,
+                            },
+                            ticks: {
+                                color: tickColour,
+                            },
+                            title: {
+                                display: true,
+                                text: "Temperature (°C)",
+                                color: tickColour,
+                            },
+                        },
+                        humidityAxis: {
+                            position: "right",
+                            beginAtZero: true,
+                            suggestedMax: 100,
+                            grid: {
+                                drawOnChartArea: false,
+                            },
+                            ticks: {
+                                color: tickColour,
+                            },
+                            title: {
+                                display: true,
+                                text: "Humidity (%)",
+                                color: tickColour,
+                            },
+                        },
+                    },
+                },
+            }
+        );
+    }
+</script>
 </body>
 </html>

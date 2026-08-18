@@ -599,3 +599,8 @@ body {
     border-right-color: #d71949;
     background: rgba(67, 10, 25, 0.55);
 }
+.refresh-note {
+    margin: 6px 0 0;
+    color: #93a3b5;
+    font-size: 12px;
+}

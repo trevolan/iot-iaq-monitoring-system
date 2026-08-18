@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="refresh" content="60">
 
     <title>AirSense IQ Dashboard</title>
 
@@ -46,7 +47,11 @@
                     <p class="eyebrow">LIVE ENVIRONMENT OVERVIEW</p>
                     <h1>Indoor Air Quality Dashboard</h1>
                     <p class="last-updated">
-                        {{ data_source }} · Last reading: {{ last_updated }}
+                         {{ data_source }} · Last reading: {{ last_updated }}
+                    </p>
+
+                    <p class="refresh-note">
+                         Dashboard refreshes automatically every 60 seconds
                     </p>
                 </div>
 

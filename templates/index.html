@@ -12,7 +12,7 @@
     >
 </head>
 
-<body>
+<body class="status-{{ readings.status_class }}">
     <div class="dashboard-layout">
 
         <aside class="sidebar">
@@ -56,13 +56,14 @@
                 </div>
             </header>
 
-            <section class="air-quality-banner">
+            <section class="air-quality-banner {{ readings.status_class }}">
                 <div>
                     <p class="banner-label">CURRENT AIR QUALITY</p>
                     <h2>{{ readings.iaq_status }}</h2>
                     <p>
-                        Current CO₂ and particulate-matter readings are
-                        within the configured demonstration limits.
+                        The latest sensor readings have been classified as
+                        {{ readings.iaq_status }} by the configured
+                        threshold-assessment logic.
                     </p>
                 </div>
 
@@ -141,21 +142,27 @@
 
             <section class="insight-grid">
 
-                <article class="insight-card recommendation-card">
-                    <div class="insight-heading">
-                        <span class="insight-icon">✓</span>
-                        <div>
-                            <p class="eyebrow">INTELLIGENT RECOMMENDATION</p>
-                            <h2>No immediate action required</h2>
-                        </div>
-                    </div>
+                <article class="insight-card recommendation-card {{ readings.status_class }}">
+    <div class="insight-heading">
+        <span class="insight-icon">
+            {% if readings.alert_active %}
+                !
+            {% else %}
+                ✓
+            {% endif %}
+        </span>
 
-                    <p>
-                        Continue normal room use and ventilation.
-                        The system will provide an alert and practical
-                        recommendation if conditions deteriorate.
-                    </p>
-                </article>
+        <div>
+            <p class="eyebrow">
+                INTELLIGENT RECOMMENDATION
+            </p>
+
+            <h2>{{ readings.alert_title }}</h2>
+        </div>
+    </div>
+
+    <p>{{ readings.recommendation }}</p>
+</article>
 
                 <article class="insight-card monitoring-card">
                     <p class="eyebrow">MONITORING STATUS</p>
@@ -168,7 +175,13 @@
 
                     <div class="monitoring-row">
                         <span>Threshold alert</span>
-                        <strong>Active</strong>
+                        <strong>
+                            {% if readings.alert_active %}
+                                Triggered
+                            {% else %}
+                                 Monitoring
+                            {% endif %}
+                        </strong>
                     </div>
 
                     <div class="monitoring-row">

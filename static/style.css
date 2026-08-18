@@ -512,3 +512,90 @@ body {
         padding: 30px 25px;
     }
 }
+/* Dynamic IAQ conditions */
+
+.air-quality-banner.good {
+    background:
+        radial-gradient(
+            circle at 80% 20%,
+            rgba(40, 199, 217, 0.35),
+            transparent 28%
+        ),
+        linear-gradient(120deg, #0b3557, #12658b);
+}
+
+.air-quality-banner.moderate {
+    background:
+        radial-gradient(
+            circle at 80% 20%,
+            rgba(255, 224, 120, 0.28),
+            transparent 28%
+        ),
+        linear-gradient(120deg, #825b11, #d08a18);
+}
+
+.air-quality-banner.poor {
+    background:
+        radial-gradient(
+            circle at 80% 20%,
+            rgba(255, 178, 92, 0.3),
+            transparent 28%
+        ),
+        linear-gradient(120deg, #8a3518, #d65f25);
+}
+
+.air-quality-banner.hazardous {
+    background:
+        radial-gradient(
+            circle at 80% 20%,
+            rgba(255, 110, 110, 0.25),
+            transparent 28%
+        ),
+        linear-gradient(120deg, #571524, #a62338);
+}
+
+.recommendation-card.good {
+    border-left-color: var(--green);
+}
+
+.recommendation-card.moderate {
+    border-left-color: var(--orange);
+}
+
+.recommendation-card.poor,
+.recommendation-card.hazardous {
+    border-left-color: #e34b4b;
+}
+
+.recommendation-card.moderate .insight-icon {
+    background: linear-gradient(135deg, #ffb347, #ff8c42);
+}
+
+.recommendation-card.poor .insight-icon,
+.recommendation-card.hazardous .insight-icon {
+    background: linear-gradient(135deg, #ef5350, #b71c3b);
+}
+/* Dynamic IAQ circle colours */
+
+.air-quality-banner.good .score-circle {
+    border-top-color: var(--cyan);
+    border-right-color: var(--green);
+}
+
+.air-quality-banner.moderate .score-circle {
+    border-top-color: #ffe082;
+    border-right-color: #ffb347;
+    background: rgba(105, 66, 8, 0.45);
+}
+
+.air-quality-banner.poor .score-circle {
+    border-top-color: #ffbd73;
+    border-right-color: #ff5f45;
+    background: rgba(92, 35, 18, 0.48);
+}
+
+.air-quality-banner.hazardous .score-circle {
+    border-top-color: #ff8a9b;
+    border-right-color: #d71949;
+    background: rgba(67, 10, 25, 0.55);
+}

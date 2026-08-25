@@ -27,12 +27,26 @@
             </div>
 
             <nav class="navigation">
-                <a href="#" class="active">Dashboard</a>
-                <a href="#">Sensor History</a>
-                <a href="#alert-history">Alerts</a>
-                <a href="#">Recommendations</a>
-                <a href="#">System Status</a>
-            </nav>
+    <a href="#dashboard" class="nav-link active">
+        Dashboard
+    </a>
+
+    <a href="#sensor-history" class="nav-link">
+        Sensor History
+    </a>
+
+    <a href="#alert-history" class="nav-link">
+        Alerts
+    </a>
+
+    <a href="#recommendations" class="nav-link">
+        Recommendations
+    </a>
+
+    <a href="#system-status" class="nav-link">
+        System Status
+    </a>
+</nav>
 
             <div class="research-label">
                 <span>MIoT Research System</span>
@@ -40,7 +54,7 @@
             </div>
         </aside>
 
-        <main class="main-content">
+        <main class="main-content" id="dashboard">
 
             <header class="topbar">
                 <div>
@@ -144,7 +158,10 @@
                 </article>
 
             </section>
-            <section class="section-heading chart-heading">
+            <section
+    class="section-heading chart-heading"
+    id="sensor-history"
+    >
     <div>
         <p class="eyebrow">RECENT SENSOR HISTORY</p>
         <h2>Environmental Trends</h2>
@@ -189,7 +206,11 @@
 
             <section class="insight-grid">
 
-                <article class="insight-card recommendation-card {{ readings.status_class }}">
+                <article
+    class="insight-card recommendation-card
+    {{ readings.status_class }}"
+    id="recommendations"
+>
     <div class="insight-heading">
         <span class="insight-icon">
             {% if readings.alert_active %}
@@ -211,7 +232,10 @@
     <p>{{ readings.recommendation }}</p>
 </article>
 
-                <article class="insight-card monitoring-card">
+                <article
+    class="insight-card monitoring-card"
+    id="system-status"
+>
                     <p class="eyebrow">MONITORING STATUS</p>
                     <h2>All sensors reporting</h2>
 
@@ -563,6 +587,21 @@ const history = JSON.parse(
             }
         );
     }
+</script>
+<script>
+    const navigationLinks = document.querySelectorAll(
+        ".navigation .nav-link"
+    );
+
+    navigationLinks.forEach((link) => {
+        link.addEventListener("click", () => {
+            navigationLinks.forEach((item) => {
+                item.classList.remove("active");
+            });
+
+            link.classList.add("active");
+        });
+    });
 </script>
 </body>
 </html>

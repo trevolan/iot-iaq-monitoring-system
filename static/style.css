@@ -862,3 +862,10 @@ html {
         align-items: flex-start;
     }
 }
+#dashboard,
+#sensor-history,
+#alert-history,
+#recommendations,
+#system-status {
+    scroll-margin-top: 25px;
+}

@@ -1,5 +1,5 @@
 def assess_air_quality(readings):
-    """Classify the readings using configured project alert thresholds."""
+    """Assess CO2 and PM2.5 using server-side research thresholds."""
 
     co2 = readings["co2"]
     pm25 = readings["pm25"]

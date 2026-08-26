@@ -21,7 +21,7 @@ CSV_COLUMNS = [
     "pm10_ug_m3",
     "co2_ppm",
     "iaq_state",
-    "predictive_flag",
+    "alert_code",
 ]
 
 
@@ -122,7 +122,7 @@ def convert_feed(feed):
         "pm10_ug_m3": feed.get("field5"),
         "co2_ppm": feed.get("field6"),
         "iaq_state": feed.get("field7"),
-        "predictive_flag": feed.get("field8"),
+        "alert_code": feed.get("field8"),
     }
 
 

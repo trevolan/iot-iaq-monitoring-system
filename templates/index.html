@@ -74,6 +74,12 @@
                     Device {{ readings.device_status }}
                 </div>
             </header>
+            {% if connection_error %}
+<section class="connection-warning" role="alert">
+    <strong>Live connection unavailable</strong>
+    <p>Live ThingSpeak data is temporarily unavailable.</p>
+</section>
+{% endif %}
 
             <section class="air-quality-banner {{ readings.status_class }}">
                 <div>

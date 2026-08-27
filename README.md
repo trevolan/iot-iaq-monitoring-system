@@ -6,13 +6,6 @@ The system collects environmental measurements from an ESP32 sensor node, stores
 
 ![AirSense IQ Dashboard](screenshots/dashboard.png)
 
-## Detailed Project Walkthrough
-
-For a complete explanation of the architecture, hardware,
-software components, alert logic, testing, challenges and
-interview questions, see the
-[Project Explanation Guide](PROJECT_EXPLANATION.md).
-
 ## Current Features
 
 - Live ThingSpeak sensor readings
